@@ -338,6 +338,30 @@ label define grouplbl ///
 label values group grouplbl
 
 
+** CONTROLS
+
+
+gen urban = v025==1
+gen age_bin = v013
+gen edu_cat = v149
+gen parity = bord_01
+
+gen husband_occupation = v704
+gen respondent_occupation = v716
+
+
+
+foreach v in v119 v120 v121 v122 v123 v124 v125 {
+    egen z_`v' = std(`v')
+}
+
+pca z_v119 z_v120 z_v121 z_v122 z_v123 z_v124 z_v125
+predict wealth_pca
+
+bysort round: egen wealth_pca_pctl = rank(wealth_pca), field
+bysort round: gen wealth_pca_p = wealth_pca_pctl / _N
+
+
 
 
 
